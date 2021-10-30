@@ -1,0 +1,30 @@
+<jaxb:bindings
+        xmlns:xs="http://www.w3.org/2000/10/XMLSchema-instance"
+        xs:schemaLocation="http://java.sun.com/xml/ns/jaxb
+                           http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        jaxb:version="2.1">
+    <jaxb:globalBindings localScoping="nested">
+        <jaxb:serializable uid="1"/>
+    </jaxb:globalBindings>
+    <jaxb:bindings schemaLocation="../../../../target/generated-sources/xsd/MTConnectError_1.3.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.mtconnect.maven.jaxb2.version_1_3.error"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="../../../../target/generated-sources/xsd/MTConnectStreams_1.3.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.mtconnect.maven.jaxb2.version_1_3.streams"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="../../../../target/generated-sources/xsd/MTConnectAssets_1.3.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.mtconnect.maven.jaxb2.version_1_3.assets"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="../../../../target/generated-sources/xsd/MTConnectDevices_1.3.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.mtconnect.maven.jaxb2.version_1_3.devices"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+</jaxb:bindings>

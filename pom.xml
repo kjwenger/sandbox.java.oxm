@@ -20,10 +20,14 @@
         </developer>
     </developers>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.surefire.version>3.0.0-M5</maven.surefire.version>
-        <maven.compiler.version>3.8.1</maven.compiler.version>
+        <maven-surefire.version>3.0.0-M5</maven-surefire.version>
+        <maven-resources.version>3.2.0</maven-resources.version>
+        <maven-jaxb2.version>0.14.0</maven-jaxb2.version>
+        <jaxb2-maven.version>2.5.0</jaxb2-maven.version>
+        <castor-maven.version>2.1</castor-maven.version>
         <junit-jupiter.version>5.8.1</junit-jupiter.version>
     </properties>
     <build>
@@ -32,10 +36,85 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven.surefire.version}</version>
+                    <version>${maven-surefire.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resource-one</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/target/generated-sources/xsd</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources/schema</directory>
+                                    <includes>
+                                        <include>MTConnectAssets_1.3.xsd</include>
+                                        <include>MTConnectDevices_1.3.xsd</include>
+                                        <include>MTConnectError_1.3.xsd</include>
+                                        <include>MTConnectStreams_1.3.xsd</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>${jaxb2-maven.version}</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <xjbSources>
+                        <xjbSource>${project.basedir}/src/main/xjb/jaxb2-maven</xjbSource>
+                    </xjbSources>
+                    <sources>
+                        <source>${project.basedir}/target/generated-sources/xsd</source>
+                    </sources>
+                    <clearOutputDir>true</clearOutputDir>
+                    <outputDirectory>target/generated-sources/jaxb2-maven</outputDirectory>
+                    <laxSchemaValidation>true</laxSchemaValidation>
+                    <addGeneratedAnnotation>true</addGeneratedAnnotation>
+                    <enableIntrospection>true</enableIntrospection>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>${maven-jaxb2.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <forceRegenerate>true</forceRegenerate>
+                    <strict>false</strict>
+                    <bindingDirectory>src/main/xjb/maven-jaxb2</bindingDirectory>
+                    <schemaDirectory>target/generated-sources/xsd</schemaDirectory>
+                    <generateDirectory>target/generated-sources/maven-jaxb2</generateDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     <dependencies>
         <dependency>
