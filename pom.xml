@@ -29,6 +29,7 @@
         <jaxb2-maven.version>2.5.0</jaxb2-maven.version>
         <maven-jibx.version>1.3.1</maven-jibx.version>
         <castor-maven.version>2.1</castor-maven.version>
+        <castor.version>1.2</castor.version>
         <junit-jupiter.version>5.8.1</junit-jupiter.version>
     </properties>
     <build>
@@ -121,13 +122,33 @@
                 <version>${maven-jibx.version}</version>
                 <executions>
                     <execution>
+                        <id>generate-java-code-from-schema</id>
+                        <goals>
+                            <goal>schema-codegen</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>compile-binding</id>
                         <goals>
                             <goal>bind</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <schemaBindingDirectory>src/main/jibx</schemaBindingDirectory>
+                    <includeSchemaBindings>
+                        <includeSchemaBindings>binding.xml</includeSchemaBindings>
+                    </includeSchemaBindings>
+                    <schemaLocation>target/generated-sources/xsd</schemaLocation>
+                    <includeSchemas>
+                        <!-- includeSchema>MTConnectAssets_1.3.xsd</includeSchema -->
+                        <includeSchema>MTConnectError_1.3.xsd</includeSchema>
+                    </includeSchemas>
+                    <defaultPackage>org.mtconnect</defaultPackage>
+                    <schemaBindingDirectory>target/generated-sources/jibx</schemaBindingDirectory>
+                    <load>true</load>
+                    <verbose>true</verbose>
+                    <validate>true</validate>
+                    <verify>true</verify>
                 </configuration>
             </plugin>
             <plugin>
@@ -159,7 +180,7 @@
         <dependency>
             <groupId>org.codehaus.castor</groupId>
             <artifactId>castor</artifactId>
-            <version>1.2</version>
+            <version>${castor.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
