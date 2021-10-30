@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<cbf:binding
+        xmlns:cbf="http://www.castor.org/SourceGenerator/Binding"
+        defaultBindingType='element'>
+    <cbf:package>
+        <cbf:name>org.mtconnect.castor.version_1_3.assets</cbf:name>
+        <cbf:namespace>urn:mtconnect.org:MTConnectAssets:1.3</cbf:namespace>
+    </cbf:package>
+    <cbf:package>
+        <cbf:name>org.mtconnect.castor.version_1_3.devices</cbf:name>
+        <cbf:namespace>urn:mtconnect.org:MTConnectDevices:1.3</cbf:namespace>
+    </cbf:package>
+    <cbf:package>
+        <cbf:name>org.mtconnect.castor.version_1_3.error</cbf:name>
+        <cbf:namespace>urn:mtconnect.org:MTConnectError:1.3</cbf:namespace>
+    </cbf:package>
+    <cbf:package>
+        <cbf:name>org.mtconnect.castor.version_1_3.streams</cbf:name>
+        <cbf:namespace>urn:mtconnect.org:MTConnectStreams:1.3</cbf:namespace>
+    </cbf:package>
+    <cbf:elementBinding name="/complexType:ErrorsType/Error">
+        <cbf:java-class name="ErrorsType$Error"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:MTConnectErrorType/Error">
+        <cbf:java-class name="MTConnectErrorType$Error"/>
+    </cbf:elementBinding>
+
+    <cbf:elementBinding name="/complexType:CuttingItemType/Description">
+        <cbf:java-class name="CuttingItemType$Description"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolArchetypeType/Description">
+        <cbf:java-class name="CuttingToolArchetypeType$Description"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingItemType/Measurements">
+        <cbf:java-class name="CuttingItemType$Measurements"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleArchetypeType/Measurements">
+        <cbf:java-class name="CuttingToolLifeCycleArchetypeType$Measurements"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolType/CuttingToolLifeCycle">
+        <cbf:java-class name="CuttingToolType$CuttingToolLifeCycle"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolArchetypeType/CuttingToolLifeCycle">
+        <cbf:java-class name="CuttingToolArchetypeType$CuttingToolLifeCycle"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolType/CuttingToolDefinition">
+        <cbf:java-class name="CuttingToolType$CuttingToolDefinition"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolArchetypeType/CuttingToolDefinition">
+        <cbf:java-class name="CuttingToolArchetypeType$CuttingToolDefinition"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleType/ReconditionCount">
+        <cbf:java-class name="CuttingToolLifeCycleType$ReconditionCount"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleArchetypeType/ReconditionCount">
+        <cbf:java-class name="CuttingToolLifeCycleArchetypeType$ReconditionCount"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleType/ToolLife">
+        <cbf:java-class name="CuttingToolLifeCycleType$ToolLife"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleArchetypeType/ToolLife">
+        <cbf:java-class name="CuttingToolLifeCycleArchetypeType$ToolLife"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleType/ProcessSpindleSpeed">
+        <cbf:java-class name="CuttingToolLifeCycleType$ProcessSpindleSpeed"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleArchetypeType/ProcessSpindleSpeed">
+        <cbf:java-class name="CuttingToolLifeCycleArchetypeType$ProcessSpindleSpeed"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleType/ProcessFeedRate">
+        <cbf:java-class name="CuttingToolLifeCycleType$ProcessFeedRate"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleArchetypeType/ProcessFeedRate">
+        <cbf:java-class name="CuttingToolLifeCycleArchetypeType$ProcessFeedRate"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleType/CuttingItems">
+        <cbf:java-class name="CuttingToolLifeCycleType$CuttingItems"/>
+    </cbf:elementBinding>
+    <cbf:elementBinding name="/complexType:CuttingToolLifeCycleArchetypeType/CuttingItems">
+        <cbf:java-class name="CuttingToolLifeCycleArchetypeType$CuttingItems"/>
+    </cbf:elementBinding>
+
+    <cbf:elementBinding name="/complexType:DevicesType/Device">
+        <cbf:java-class name="DevicesType$Device"/>
+    </cbf:elementBinding>
+
+    <cbf:elementBinding name="/complexType:ComponentStreamType/Condition">
+        <cbf:java-class name="ComponentStreamType$Condition"/>
+    </cbf:elementBinding>
+<!--
+        <cbf:elementBinding name="invoice">
+            <cbf:java-class name="MyInvoice" final="true" equals="true"/>
+        </cbf:elementBinding>
+
+        <cbf:elementBinding name="item">
+            <cbf:java-class package="test.business" final="true" equals="true">
+            </cbf:java-class>
+            <cbf:elementBinding name="Price">
+                <cbf:member name="specialPrice" java-type="double"/>
+            </cbf:elementBinding>
+        </cbf:elementBinding>
+        <cbf:elementBinding name="group:customer/address">
+            <cbf:java-class package="test" name="AddressElement"/>
+        </cbf:elementBinding>
+        <cbf:complexTypeBinding name="address">
+            <cbf:java-class name="MyAddress"/>
+            <cbf:elementBinding name="street2">
+                <cbf:member name="SecondStreet" type="string"/>
+            </cbf:elementBinding>
+        </cbf:complexTypeBinding>
+    -->
+</cbf:binding>
