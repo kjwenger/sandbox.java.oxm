@@ -13,3 +13,20 @@ Sandbox for all Java-related Object-to-XML-Mapping (OXM) experiments using a wid
 - [jaxb2-maven-plugin](https://www.mojohaus.org/jaxb2-maven-plugin/Documentation/v2.5.0/index.html)
 - [maven-jibx-plugin](http://jibx.sourceforge.net/maven-jibx-plugin/)
 - [castor-maven-plugin](https://www.mojohaus.org/castor-maven-plugin/)
+
+## Prerequisites
+
+- Java SDK
+- Maven
+
+```shell
+sudo apt install openjdk-17-jdk maven
+```
+
+## Build
+
+```shell
+git clone --recursive https://github.com/kjwenger/sandbox.java.oxm.git
+cd sandbox.java.oxm
+mvn install
+```
