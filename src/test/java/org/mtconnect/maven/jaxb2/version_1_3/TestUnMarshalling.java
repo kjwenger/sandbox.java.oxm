@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestMarshalling {
+public class TestUnMarshalling {
 
     private final static Logger logger =
-            Logger.getLogger(TestMarshalling.class.getName());
+            Logger.getLogger(TestUnMarshalling.class.getName());
 
     private static final String SMS_TESTBED_NIST_GOV_VDS =
             "gov/nist/smstestbed/vds/MTConnectDevices.xml";
@@ -40,18 +40,18 @@ public class TestMarshalling {
         final JAXBContext jaxbContext =
                 JAXBContext.newInstance(MTConnectDevicesType.class);
 
-        final URL url = TestMarshalling.class.getClassLoader().getResource(SMS_TESTBED_NIST_GOV_VDS);
+        final URL url = TestUnMarshalling.class.getClassLoader().getResource(SMS_TESTBED_NIST_GOV_VDS);
         final Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
         final Object unMarshaled = jaxbUnMarshaller.unmarshal(url);
         logger.log(Level.INFO, String.format(
-                "TestMarshalling#testReadXml()" +
+                "TestUnMarshalling#testReadXml()" +
                         " unMarshaled = %s\n",
                 unMarshaled));
         assertTrue(unMarshaled instanceof JAXBElement,
                 "Unmarshalling did not create a JAXBElement instance");
         final JAXBElement jaxbElement = (JAXBElement) unMarshaled;
         logger.log(Level.INFO, String.format(
-                "TestMarshalling#testReadXml()" +
+                "TestUnMarshalling#testReadXml()" +
                         " jaxbElement.getDeclaredType() = %s," +
                         " jaxbElement.getName() = %s," +
                         " jaxbElement.getScope() = %s," +
@@ -72,7 +72,7 @@ public class TestMarshalling {
     private void doTestMTConnectDevicesType() throws Exception {
         final JAXBContext jaxbContext =
                 JAXBContext.newInstance(MTConnectDevicesType.class);
-        final URL url = TestMarshalling.class.getClassLoader().getResource(SMS_TESTBED_NIST_GOV_VDS);
+        final URL url = TestUnMarshalling.class.getClassLoader().getResource(SMS_TESTBED_NIST_GOV_VDS);
         final Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
         final JAXBElement<MTConnectDevicesType> jaxbElement =
                 (JAXBElement<MTConnectDevicesType>)
@@ -84,7 +84,7 @@ public class TestMarshalling {
                 MTCONNECT_DEVICES_TYPE_DID_NOT_CONTAIN_ANY_ELEMENTS_DEVICES);
         for (DeviceType device : deviceList) {
             logger.log(Level.INFO, String.format(
-                    "TestMarshalling#testReadXml()" +
+                    "TestUnMarshalling#testReadXml()" +
                             " device.getId() = %s," +
                             " device.getName() = %s\n",
                     device.getId(),
@@ -98,7 +98,7 @@ public class TestMarshalling {
                     : componentList) {
                 final ComponentType component = componentElement.getValue();
                 logger.log(Level.INFO, String.format(
-                        "TestMarshalling#testReadXml()" +
+                        "TestUnMarshalling#testReadXml()" +
                                 " component.getId() = %s," +
                                 " component.getSampleInterval() = %g," +
                                 " component.getSampleRate() = %g\n",
