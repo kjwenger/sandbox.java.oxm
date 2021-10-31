@@ -19,17 +19,32 @@
             </roles>
         </developer>
     </developers>
+    <repositories>
+        <repository>
+            <id>maven2-repository</id>
+            <name>maven2-repository</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>oss-sonatype</id>
+            <name>oss-sonatype</name>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+    </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven-surefire.version>3.0.0-M5</maven-surefire.version>
         <maven-resources.version>3.2.0</maven-resources.version>
+        <maven-antrun.version>3.0.0</maven-antrun.version>
+        <maven-replacer.version>1.4.1</maven-replacer.version>
         <maven-jaxb2.version>0.14.0</maven-jaxb2.version>
         <jaxb2-maven.version>2.5.0</jaxb2-maven.version>
         <maven-jibx.version>1.3.1</maven-jibx.version>
         <castor-maven.version>2.1</castor-maven.version>
-        <castor.version>1.2</castor.version>
+        <castor.version>1.4.1</castor.version>
+        <xmlbeans.version>5.0.1</xmlbeans.version>
         <junit-jupiter.version>5.8.1</junit-jupiter.version>
     </properties>
     <build>
@@ -45,11 +60,32 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${maven-antrun.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <mkdir dir="target"/>
+                                <mkdir dir="target/generated-sources"/>
+                                <mkdir dir="target/generated-sources/xsd"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>${maven-resources.version}</version>
                 <executions>
                     <execution>
-                        <id>copy-resource-one</id>
+                        <id>copy-schemas</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -72,116 +108,229 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>${jaxb2-maven.version}</version>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>maven-replacer-plugin</artifactId>
+                <version>${maven-replacer.version}</version>
                 <executions>
                     <execution>
-                        <id>xjc</id>
+                        <id>fix-schemas</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>xjc</goal>
+                            <goal>replace</goal>
                         </goals>
+                        <configuration>
+                            <includes>
+                                <include>target/generated-sources/xsd/*.xsd</include>
+                            </includes>
+                            <token>18446744073709551615</token>
+                            <value>9223372036854775807</value>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <xjbSources>
-                        <xjbSource>src/main/xjb/jaxb2-maven</xjbSource>
-                    </xjbSources>
-                    <sources>
-                        <source>target/generated-sources/xsd</source>
-                    </sources>
-                    <clearOutputDir>true</clearOutputDir>
-                    <outputDirectory>target/generated-sources/jaxb2-maven</outputDirectory>
-                    <laxSchemaValidation>true</laxSchemaValidation>
-                    <addGeneratedAnnotation>true</addGeneratedAnnotation>
-                    <enableIntrospection>true</enableIntrospection>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>${maven-jaxb2.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <strict>false</strict>
-                    <cleanPackageDirectories>true</cleanPackageDirectories>
-                    <bindingDirectory>src/main/xjb/maven-jaxb2</bindingDirectory>
-                    <schemaDirectory>target/generated-sources/xsd</schemaDirectory>
-                    <generateDirectory>target/generated-sources/maven-jaxb2</generateDirectory>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jibx</groupId>
-                <artifactId>maven-jibx-plugin</artifactId>
-                <version>${maven-jibx.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-java-code-from-schema</id>
-                        <goals>
-                            <goal>schema-codegen</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>compile-binding</id>
-                        <goals>
-                            <goal>bind</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includeSchemaBindings>
-                        <includeSchemaBindings>binding.xml</includeSchemaBindings>
-                    </includeSchemaBindings>
-                    <schemaLocation>target/generated-sources/xsd</schemaLocation>
-                    <includeSchemas>
-                        <!-- includeSchema>MTConnectAssets_1.3.xsd</includeSchema -->
-                        <includeSchema>MTConnectError_1.3.xsd</includeSchema>
-                    </includeSchemas>
-                    <defaultPackage>org.mtconnect</defaultPackage>
-                    <schemaBindingDirectory>target/generated-sources/jibx</schemaBindingDirectory>
-                    <load>true</load>
-                    <verbose>true</verbose>
-                    <validate>true</validate>
-                    <verify>true</verify>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>castor-maven-plugin</artifactId>
-                <version>${castor-maven.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!-- schemaDirectory>target/generated-sources/xsd</schemaDirectory -->
-                    <!-- schema>target/generated-sources/xsd/MTConnectAssets_1.3.xsd</schema -->
-                    <schema>target/generated-sources/xsd/MTConnectError_1.3.xsd</schema>
-                    <!-- schema>target/generated-sources/xsd/MTConnectDevices_1.3.xsd</schema -->
-                    <!-- schema>target/generated-sources/xsd/MTConnectStreams_1.3.xsd</schema -->
-                    <generateMappings>true</generateMappings>
-                    <nameConflictStrategy>informViaLog</nameConflictStrategy>
-                    <verbose>true</verbose>
-                    <warnings>true</warnings>
-                </configuration>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>jaxb2-maven</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jaxb2-maven-plugin</artifactId>
+                        <version>${jaxb2-maven.version}</version>
+                        <executions>
+                            <execution>
+                                <id>xjc</id>
+                                <goals>
+                                    <goal>xjc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <xjbSources>
+                                <xjbSource>src/main/xjb/jaxb2-maven</xjbSource>
+                            </xjbSources>
+                            <sources>
+                                <source>target/generated-sources/xsd</source>
+                            </sources>
+                            <clearOutputDir>true</clearOutputDir>
+                            <outputDirectory>target/generated-sources/jaxb2-maven</outputDirectory>
+                            <laxSchemaValidation>true</laxSchemaValidation>
+                            <addGeneratedAnnotation>true</addGeneratedAnnotation>
+                            <enableIntrospection>true</enableIntrospection>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>maven-jaxb2</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jvnet.jaxb2.maven2</groupId>
+                        <artifactId>maven-jaxb2-plugin</artifactId>
+                        <version>${maven-jaxb2.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <strict>false</strict>
+                            <cleanPackageDirectories>true</cleanPackageDirectories>
+                            <bindingDirectory>src/main/xjb/maven-jaxb2</bindingDirectory>
+                            <schemaDirectory>target/generated-sources/xsd</schemaDirectory>
+                            <generateDirectory>target/generated-sources/maven-jaxb2</generateDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jixb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jibx</groupId>
+                        <artifactId>maven-jibx-plugin</artifactId>
+                        <version>${maven-jibx.version}</version>
+                        <executions>
+                            <execution>
+                                <id>generate-java-code-from-schema</id>
+                                <goals>
+                                    <goal>schema-codegen</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>compile-binding</id>
+                                <goals>
+                                    <goal>bind</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <includeSchemaBindings>
+                                <includeSchemaBindings>binding.xml</includeSchemaBindings>
+                            </includeSchemaBindings>
+                            <schemaLocation>target/generated-sources/xsd</schemaLocation>
+                            <includeSchemas>
+                                <includeSchema>MTConnectError_1.3.xsd</includeSchema>
+                            </includeSchemas>
+                            <defaultPackage>org.mtconnect.jixb.version_1_3</defaultPackage>
+                            <schemaBindingDirectory>target/generated-sources/jibx</schemaBindingDirectory>
+                            <load>true</load>
+                            <verbose>true</verbose>
+                            <validate>true</validate>
+                            <verify>true</verify>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>castor</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>castor-maven-plugin</artifactId>
+                        <version>${castor-maven.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <schemaDirectory>target/generated-sources/xsd</schemaDirectory>
+                            <schema>target/generated-sources/xsd/MTConnectError_1.3.xsd</schema>
+                            <generateMappings>false</generateMappings>
+                            <mappingName>target/generated-sources/castor/mappings.xml</mappingName>
+                            <outputDirectory>target/generated-sources/castor</outputDirectory>
+                            <classes></classes>
+                            <className></className>
+                            <verbose>true</verbose>
+                            <warnings>true</warnings>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.codehaus.castor</groupId>
+                    <artifactId>castor-core</artifactId>
+                    <version>${castor.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.codehaus.castor</groupId>
+                    <artifactId>castor-xml</artifactId>
+                    <version>${castor.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>xmlbeans</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.xmlbeans</groupId>
+                        <artifactId>xmlbeans</artifactId>
+                        <version>${xmlbeans.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repackage>org.mtconnect.xmlbeans.version_1_3</repackage>
+                            <name>MTConnectSchema</name>
+                            <partialMethods>ALL,-GET_LIST,-XGET_LIST,-XGET_ARRAY</partialMethods>
+                            <mdefNamespaces>
+                                urn:mtconnect.org:MTConnectError:1.3
+                            </mdefNamespaces>
+                            <baseSchemaLocation>${project.basedir}/target/generated-sources/xsd</baseSchemaLocation>
+                            <buildSchemas>true</buildSchemas>
+                            <sourceDir>${project.basedir}/target/generated-sources/xsd</sourceDir>
+                            <sourceSchemas>
+                                MTConnectError_1.3.*
+                            </sourceSchemas>
+                            <xmlConfigs>
+                                ${project.basedir}/src/main/resources/MTConnectError_1.3.xsdconfig
+                            </xmlConfigs>
+                            <javaTargetDir>${project.basedir}/target/generated-sources/xmlbeans</javaTargetDir>
+                            <classTargetDir>${project.basedir}/target/classes/xmlbeans</classTargetDir>
+                            <classPath>
+                                ${user.home}/.m2/repository/org/apache/xmlbeans/xmlbeans/${castor.version}/xmlbeans-${castor.version}.jar
+                            </classPath>
+                            <verbose>true</verbose>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.xmlbeans</groupId>
+                                <artifactId>xmlbeans</artifactId>
+                                <version>${xmlbeans.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.xmlbeans</groupId>
+                    <artifactId>xmlbeans</artifactId>
+                    <version>${xmlbeans.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
     <dependencies>
-        <dependency>
-            <groupId>org.codehaus.castor</groupId>
-            <artifactId>castor</artifactId>
-            <version>${castor.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

@@ -1,0 +1,52 @@
+<project name="sandbox-java-oxm" default="generate-sources" basedir=".">
+    <description>
+        build file to generate all kinds of OXM
+    </description>
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="main" location="src/main"/>
+    <property name="resources" location="src/main/resources"/>
+    <property name="schemas" location="src/main/resources/schema"/>
+    <property name="target" location="target"/>
+    <property name="generated-sources" location="target/generated-sources"/>
+    <property name="xsd" location="target/generated-sources/xsd"/>
+    <property name="xmlbeans" location="target/generated-sources/xmlbeans"/>
+    <property name="classes" location="target/classes"/>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${target}"/>
+        <mkdir dir="${generated-sources}"/>
+        <mkdir dir="${xsd}"/>
+        <copy todir="${xsd}">
+            <fileset dir="${schemas}"/>
+        </copy>
+    </target>
+
+    <target name="generate-sources" depends="init"
+            description="generates the java sources from schema files">
+        <taskdef name="xmlbean"
+                 classname="org.apache.xmlbeans.impl.tool.XMLBean">
+            <classpath location="${user.home}/.m2/repository/org/apache/xmlbeans/xmlbeans/5.0.0/xmlbeans-5.0.0.jar" />
+            <classpath location="${user.home}/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.0/log4j-api-2.14.0.jar" />
+            <classpath location="${user.home}/.m2/repository/org/apache/logging/log4j/log4j-core/2.13.2/log4j-core-2.13.2.jar" />
+        </taskdef>
+        <copy todir="${xsd}">
+            <file basedir="${resources}" name="MTConnectError_1.3.xsdconfig"/>
+        </copy>
+        <xmlbean includeantruntime="true" includejavaruntime="true"
+                 srcgendir="${xmlbeans}" srconly="true"
+                 typesystemname="org.mtconnect.xmlbeans.version_1_3"
+                 classgendir="${classes}" classpath="${user.home}/.m2/repository/org/apache/xmlbeans/xmlbeans/5.0.0/xmlbeans-5.0.0.jar"
+                 verbose="true">
+            <fileset dir="${xsd}">
+                <filename name="MTConnectError_1.3.*"/>
+            </fileset>
+        </xmlbean>
+    </target>
+
+    <target name="clean"
+            description="clean up">
+        <delete dir="${target}"/>
+    </target>
+</project>
