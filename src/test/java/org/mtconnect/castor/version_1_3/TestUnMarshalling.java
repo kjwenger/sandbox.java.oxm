@@ -1,10 +1,13 @@
 package org.mtconnect.castor.version_1_3;
 
 import org.exolab.castor.xml.Unmarshaller;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mtconnect.TestSuite;
 import org.mtconnect.castor.version_1_3.devices.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
@@ -25,6 +28,11 @@ public class TestUnMarshalling {
 
     public static class UnMarshalled implements Serializable {
 
+    }
+
+    @BeforeAll
+    public static void beforeAll() throws IOException {
+        TestSuite.readLoggingProperties();
     }
 
     @Test

@@ -1,11 +1,14 @@
 package org.mtconnect.maven.jaxb2.version_1_3;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mtconnect.TestSuite;
 import org.mtconnect.maven.jaxb2.version_1_3.devices.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,6 +27,11 @@ public class TestUnMarshalling {
     private static final String
             MTCONNECT_DEVICES_TYPE_DID_NOT_CONTAIN_ANY_ELEMENTS_DEVICES =
             "MTConnectDevicesType did not contain any elements: <Devices>";
+
+    @BeforeAll
+    public static void beforeAll() throws IOException {
+        TestSuite.readLoggingProperties();
+    }
 
     @Test
     void testVolatileDataStreamRaw() throws Exception {
