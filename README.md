@@ -5,6 +5,7 @@ Sandbox for all Java-related Object-to-XML-Mapping (OXM) experiments using a wid
 
 - Reading about OXM
   - [What is the best Java OXM library?](https://stackoverflow.com/questions/413597/what-is-the-best-java-oxm-library)
+  - [XML data binding](https://en.wikipedia.org/wiki/XML_data_binding)
 
 - Frameworks for OXM
   - [JiBX: Binding XML to Java Code](http://jibx.sourceforge.net/index.html)
@@ -90,5 +91,5 @@ mvn install -P jaxb2-maven
 ### Ant
 
 ```shell
-ant compile
+ant generate-sources
 ```
