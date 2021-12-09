@@ -19,7 +19,7 @@ jobs:
       # Checkout the code as the first step.
       - run:
           name: Clone recursively
-          command: git clone https://github.com/kjwenger/sandbox.java.oxm.git --recursive --branch ${CIRCLE_BRANCH} /home/circleci/project
+          command: git clone ${CIRCLE_REPOSITORY_URL} --recursive --branch ${CIRCLE_BRANCH} ${CIRCLE_WORKING_DIRECTORY}
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
